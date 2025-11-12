@@ -1,23 +1,25 @@
 CREATE TABLE purchases (
-   id BIGSERIAL PRIMARY KEY,
-   descricao VARCHAR(255) NOT NULL,
-   status VARCHAR(50) NOT NULL
+                           id BIGSERIAL PRIMARY KEY,
+                           description VARCHAR(255) NOT NULL,
+                           status VARCHAR(50) NOT NULL,
+                           total VARCHAR(255)
 );
 
-CREATE TABLE itens (
-    id BIGSERIAL PRIMARY KEY,
-    compra_id BIGINT REFERENCES purchases(id) ON DELETE CASCADE,
-    item_pai_id BIGINT REFERENCES itens(id) ON DELETE CASCADE,
-    descricao VARCHAR(255) NOT NULL,
-    valor DECIMAL(10,2) NOT NULL
+CREATE TABLE items (
+                       id BIGSERIAL PRIMARY KEY,
+                       description VARCHAR(255) NOT NULL,
+                       value DECIMAL(10,2) NOT NULL,
+                       purchase_id BIGINT REFERENCES purchases(id) ON DELETE CASCADE,
+                       parent_item_id BIGINT REFERENCES items(id) ON DELETE CASCADE
 );
+
 
 SELECT
-    c.id AS id_compra,
-    c.descricao AS descricao_compra,
-    SUM(i.valor) AS valor_total_compra,
-    COUNT(i.id) AS quantidade_itens
-FROM purchases c
-LEFT JOIN itens i ON i.compra_id = c.id
-GROUP BY c.id, c.descricao
-ORDER BY c.id;
+    p.id AS purchase_id,
+    p.description AS purchase_description,
+    SUM(i.value) AS total_value,
+    COUNT(i.id) AS item_count
+FROM purchases p
+         LEFT JOIN items i ON i.purchase_id = p.id
+GROUP BY p.id, p.description
+ORDER BY p.id;
