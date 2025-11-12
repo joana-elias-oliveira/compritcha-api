@@ -1,20 +1,20 @@
 package com.compritcha.api.service;
 
+import com.compritcha.api.domain.model.Item;
 import com.compritcha.api.domain.model.Purchase;
 import com.compritcha.api.dto.PurchaseRequest;
-import com.compritcha.api.domain.model.Item;
 import com.compritcha.api.repository.PurchaseRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class PurchaseService {
 
-    private final PurchaseRepository purchaseRepository;
+    @Autowired
+    private PurchaseRepository purchaseRepository;
 
     public Purchase createPurchase(PurchaseRequest request) {
         Purchase purchase = new Purchase();
