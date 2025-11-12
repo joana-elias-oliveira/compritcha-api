@@ -27,6 +27,8 @@ public class Purchase {
     @JsonManagedReference
     private List<Item> items;
 
+    private String total;
+
     public void setItems(List<Item> items) {
         this.items = items;
 

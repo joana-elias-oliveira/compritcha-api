@@ -45,6 +45,7 @@ public class PurchaseService {
     private Purchase mapPurchase(PurchaseRequest request, Purchase purchase) {
         purchase.setDescription(request.getDescription());
         purchase.setStatus(request.getStatus());
+        purchase.setTotal(request.getTotal());
 
         List<Item> items = new ArrayList<>();
         if (request.getItems() != null) {
