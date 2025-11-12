@@ -112,7 +112,7 @@
                 <configuration>
                     <url>jdbc:postgresql://localhost:5432/compritcha</url>
                     <user>postgres</user>
-                    <password>123456</password>
+                    <password>root</password>
                 </configuration>
             </plugin>
 
