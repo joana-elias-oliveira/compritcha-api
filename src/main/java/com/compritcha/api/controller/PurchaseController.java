@@ -1,0 +1,77 @@
+package com.compritcha.api.controller;
+
+import com.compritcha.api.domain.model.Purchase;
+import com.compritcha.api.domain.model.enums.Status;
+import com.compritcha.api.dto.PurchaseRequest;
+import com.compritcha.api.service.PurchaseService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequestMapping("/api/purchases")
+public class PurchaseController {
+
+    private final PurchaseService purchaseService;
+
+    @PostMapping
+    public ResponseEntity<Purchase> createPurchase(@RequestBody PurchaseRequest request) {
+        Purchase purchase = purchaseService.createPurchase(request);
+        return ResponseEntity.ok(purchase);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Purchase>> getPurchases(
+            @RequestParam(required = false) Status status
+    ) {
+        List<Purchase> purchases = purchaseService.getPurchasesByStatus(status);
+        return ResponseEntity.ok(purchases);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Purchase> getById(@PathVariable Long id) {
+        try {
+            Purchase purchase = purchaseService.getById(id);
+            return ResponseEntity.ok(purchase);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Purchase> updatePurchase(
+            @PathVariable Long id,
+            @RequestBody PurchaseRequest request) {
+        try {
+            Purchase updatedPurchase = purchaseService.updatePurchase(id, request);
+            return ResponseEntity.ok(updatedPurchase);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePurchase(@PathVariable Long id) {
+        try {
+            purchaseService.deletePurchase(id);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Purchase> updateStatus(@PathVariable Long id, @RequestParam Status status) {
+        try {
+            Purchase updated = purchaseService.updateStatus(id, status);
+            return ResponseEntity.ok(updated);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+}
